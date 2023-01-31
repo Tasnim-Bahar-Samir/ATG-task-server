@@ -72,6 +72,17 @@ async function run(){
             }
             res.send({message:"Invalid Password"})
           })
+
+          app.get('/user', async(req,res)=>{
+            const token = req.headers.authorization;
+            const user = jwt.verify(token, process.env.JWT_SECRETEKEY)
+            const query = {email: user.email}
+            const result = await userCollection.findOne(query);
+            if(result){
+              res.send({success: true,data: result})
+            }
+          })
+          
     }
     catch(err){
         console.log(err.name,err.message)
